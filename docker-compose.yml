@@ -26,3 +26,19 @@ services:
       MYSQL_DATABASE: miniautorizador
       MYSQL_ROOT_PASSWORD:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    profiles:
+      - donotstart
+
+  miniautorizador:
+    image: miniautorizador:latest
+    hostname: miniautorizador
+    container_name: miniautorizador
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "mongo"
+    environment:
+      MONGO_USER: user
+      MONGO_PWD: password
+      MONGO_URI: mongo:27017
