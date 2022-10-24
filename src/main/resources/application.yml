@@ -1,0 +1,8 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: miniautorizador
+  data:
+    mongodb:
+      uri: mongodb://${MONGO_USER}:${MONGO_PWD}@${MONGO_URI}/miniautorizador
