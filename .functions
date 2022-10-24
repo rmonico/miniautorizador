@@ -48,9 +48,5 @@ _run_maven() {
 }
 
 _run_docker() {
-  docker run "$DOCKER_IMAGE:$DOCKER_TAG"
-}
-
-build_and_run() {
-
+  docker-compose up
 }
