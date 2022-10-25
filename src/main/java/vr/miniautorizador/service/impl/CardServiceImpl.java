@@ -19,10 +19,6 @@ public class CardServiceImpl implements CardService {
     public Optional<BigDecimal> getBalance(String cardNumber) {
         Optional<Card> cardOpt = repository.findByNumero(cardNumber);
 
-        Card card = cardOpt.get();
-
-        card.setSaldo(new BigDecimal("19.99"));
-
-        return Optional.of(card.getSaldo());
+        return cardOpt.map(Card::getSaldo);
     }
 }
