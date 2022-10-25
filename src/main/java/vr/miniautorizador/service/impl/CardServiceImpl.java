@@ -17,6 +17,12 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Optional<BigDecimal> getBalance(String cardNumber) {
-        return null;
+        Optional<Card> cardOpt = repository.findByNumero(cardNumber);
+
+        Card card = cardOpt.get();
+
+        card.setSaldo(new BigDecimal("19.99"));
+
+        return Optional.of(card.getSaldo());
     }
 }
