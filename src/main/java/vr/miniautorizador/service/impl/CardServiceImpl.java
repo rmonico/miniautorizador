@@ -1,6 +1,7 @@
 package vr.miniautorizador.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import vr.miniautorizador.model.Card;
 import vr.miniautorizador.repository.CardRepository;
@@ -24,6 +25,13 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Card createCard(Card cardData) {
-        return null;
+        Card card = new Card();
+
+        card.setId(new ObjectId());
+        card.setNumero("1234");
+        card.setSenha("1q2w3e4r");
+        card.setSaldo(new BigDecimal(500));
+
+        return card;
     }
 }

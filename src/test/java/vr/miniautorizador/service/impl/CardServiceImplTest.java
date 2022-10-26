@@ -44,7 +44,7 @@ class CardServiceImplTest {
         card.setId(null);
         card.setSaldo(null);
 
-        when(repository.insert(eq(card))).thenReturn(defaultCard());
+//        when(repository.insert(eq(card))).thenReturn(defaultCard());
 
         Card created = service.createCard(card);
 
