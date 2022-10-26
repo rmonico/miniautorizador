@@ -1,6 +1,7 @@
 package vr.miniautorizador.host;
 
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vr.miniautorizador.exception.CardNotFoundException;
@@ -20,7 +21,7 @@ public class CardEndpoint {
 
     @GetMapping("/cartoes/{numeroCartao}")
     public CardBalanceResponseDto getCardBalance(@PathVariable("numeroCartao") String cardNumber) {
-        Optional<BigDecimal> saldo = cardService.getBalance(cardNumber);
+        val saldo = cardService.getBalance(cardNumber);
 
         return new CardBalanceResponseDto(saldo.orElseThrow(CardNotFoundException::new));
     }
@@ -28,7 +29,7 @@ public class CardEndpoint {
     @PostMapping("/cartoes")
     @ResponseStatus(HttpStatus.CREATED)
     public CardCreateResponseDto createCard(@RequestBody CardCreateRequestDto body) {
-        CardCreateResponseDto response = new CardCreateResponseDto();
+        val response = new CardCreateResponseDto();
 
         response.setNumeroCartao("6549873025634501");
         response.setSenha("1234");

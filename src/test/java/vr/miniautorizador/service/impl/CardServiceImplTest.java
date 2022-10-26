@@ -1,5 +1,6 @@
 package vr.miniautorizador.service.impl;
 
+import lombok.val;
 import org.assertj.core.api.ObjectAssert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +31,7 @@ class CardServiceImplTest {
     void GIVEN_card_number_WHEN_it_exists_THEN_return_its_balance() {
         when(repository.findByNumero(eq(CARD_NUMBER))).thenReturn(defaultCardOpt());
 
-        Optional<BigDecimal> balance = service.getBalance(CARD_NUMBER);
+        val balance = service.getBalance(CARD_NUMBER);
 
         assertThat(balance)
             .isPresent()
@@ -40,15 +41,15 @@ class CardServiceImplTest {
 
     @Test
     void GIVEN_card_number_and_password_WHEN_number_dont_exists_THEN_create_it() {
-        Card card = defaultCard();
+        val card = defaultCard();
         card.setId(null);
         card.setSaldo(null);
 
         when(repository.insert(eq(card))).thenReturn(defaultCard());
 
-        Card created = service.createCard(card);
+        val created = service.createCard(card);
 
-        ObjectAssert<Card> assertion = assertThat(created);
+        val assertion = assertThat(created);
 
         assertion.extracting(Card::getId).isNotNull();
         assertion.extracting(Card::getNumero).isEqualTo(CARD_NUMBER);

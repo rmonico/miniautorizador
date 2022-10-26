@@ -1,6 +1,7 @@
 package vr.miniautorizador.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import vr.miniautorizador.model.Card;
@@ -18,7 +19,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Optional<BigDecimal> getBalance(String cardNumber) {
-        Optional<Card> cardOpt = repository.findByNumero(cardNumber);
+        val cardOpt = repository.findByNumero(cardNumber);
 
         return cardOpt.map(Card::getSaldo);
     }
