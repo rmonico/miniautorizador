@@ -1,5 +1,6 @@
 package vr.miniautorizador.host;
 
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -24,7 +25,8 @@ public class CardEndpointTest {
     private CardService service;
 
     @Test
-    void getCardBalance() throws Exception {
+    @SneakyThrows
+    void GIVEN_card_number_WHEN_it_exists_THEN_return_its_balance() {
         when(service.getBalance(CARD_NUMBER)).thenReturn(of(defaultCard().getSaldo()));
 
         mvc.perform(
@@ -32,4 +34,5 @@ public class CardEndpointTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.saldo").value(CARD_BALANCE));
     }
+
 }

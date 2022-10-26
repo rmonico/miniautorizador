@@ -17,6 +17,8 @@ public class CardEndpoint {
 
     @GetMapping("/cartoes/{numeroCartao}")
     public CardBalanceResponseDto getCardBalance(@PathVariable("numeroCartao") String cardNumber) {
-        return new CardBalanceResponseDto(new BigDecimal("19.99"));
+        BigDecimal saldo = cardService.getBalance(cardNumber).get();
+
+        return new CardBalanceResponseDto(saldo);
     }
 }
