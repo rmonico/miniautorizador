@@ -10,8 +10,8 @@ import vr.miniautorizador.repository.CardRepository;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static vr.miniautorizador.model.MockedCard.CARD_NUMBER;
 import static vr.miniautorizador.model.MockedCard.defaultCardOpt;
@@ -27,12 +27,14 @@ class CardServiceImplTest {
 
     @Test
     void GIVEN_card_number_WHEN_it_exists_THEN_return_its_balance() {
-        when(repository.findByNumero(CARD_NUMBER)).thenReturn(defaultCardOpt());
+        when(repository.findByNumero(eq(CARD_NUMBER))).thenReturn(defaultCardOpt());
 
         Optional<BigDecimal> balance = service.getBalance(CARD_NUMBER);
 
-        assertTrue(balance.isPresent());
-        assertEquals(new BigDecimal("19.99"), balance.get());
+        assertThat(balance)
+            .isPresent()
+            .get()
+            .isEqualTo(new BigDecimal("19.99"));
     }
 
 }
