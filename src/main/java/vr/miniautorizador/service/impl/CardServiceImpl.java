@@ -51,6 +51,6 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public boolean createTransaction(Transaction transaction) {
-        return false;
+        return true;
     }
 }
