@@ -12,6 +12,8 @@ public class MockedCard {
 
     public static final BigDecimal CARD_BALANCE = new BigDecimal("19.99");
 
+    public static final BigDecimal DEFAULT_CARD_BALANCE = BigDecimal.valueOf(500);
+
     public static final String CARD_PASS = "1q2w3e4r";
 
     public static Card defaultCard() {

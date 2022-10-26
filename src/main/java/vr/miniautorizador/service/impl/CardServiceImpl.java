@@ -21,4 +21,9 @@ public class CardServiceImpl implements CardService {
 
         return cardOpt.map(Card::getSaldo);
     }
+
+    @Override
+    public Card createCard(Card cardData) {
+        return null;
+    }
 }
