@@ -1,19 +1,18 @@
 package vr.miniautorizador.service.impl;
 
 import lombok.val;
-import org.assertj.core.api.ObjectAssert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import vr.miniautorizador.exception.ExistingCardException;
 import vr.miniautorizador.model.Card;
 import vr.miniautorizador.repository.CardRepository;
 
-import java.math.BigDecimal;
-import java.util.Optional;
-
+import static java.util.Optional.of;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static vr.miniautorizador.model.MockedCard.*;
@@ -55,6 +54,18 @@ class CardServiceImplTest {
         assertion.extracting(Card::getNumero).isEqualTo(CARD_NUMBER);
         assertion.extracting(Card::getSenha).isEqualTo(CARD_PASS);
         assertion.extracting(Card::getSaldo).isEqualTo(CARD_BALANCE);
+    }
+
+    @Test
+    void GIVEN_card_number_and_password_WHEN_number_already_exists_THEN_return_422() {
+        val card = Card.builder()
+            .numero("6549873025634501")
+            .senha("1234")
+            .build();
+
+//        when(repository.findByNumero(eq(card.getNumero()))).thenReturn(of(card));
+
+        assertThatThrownBy(() -> service.createCard(card)).isInstanceOf(ExistingCardException.class);
     }
 
 }

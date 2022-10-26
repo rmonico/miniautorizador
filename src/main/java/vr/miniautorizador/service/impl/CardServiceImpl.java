@@ -2,8 +2,8 @@ package vr.miniautorizador.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
+import vr.miniautorizador.exception.ExistingCardException;
 import vr.miniautorizador.model.Card;
 import vr.miniautorizador.repository.CardRepository;
 import vr.miniautorizador.service.CardService;
@@ -26,6 +26,6 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Card createCard(Card card) {
-        return repository.insert(card);
+        throw new ExistingCardException();
     }
 }
