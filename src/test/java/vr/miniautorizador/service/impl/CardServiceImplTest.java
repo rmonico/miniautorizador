@@ -63,7 +63,7 @@ class CardServiceImplTest {
             .senha("1234")
             .build();
 
-//        when(repository.findByNumero(eq(card.getNumero()))).thenReturn(of(card));
+        when(repository.findByNumero(eq(card.getNumero()))).thenReturn(of(card));
 
         assertThatThrownBy(() -> service.createCard(card)).isInstanceOf(ExistingCardException.class);
     }
