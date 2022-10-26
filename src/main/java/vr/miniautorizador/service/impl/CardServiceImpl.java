@@ -30,7 +30,7 @@ public class CardServiceImpl implements CardService {
         this.repository = repository;
 
         this.creationHandler = new HashMap<>();
-        this.creationHandler.put(TRUE, card -> { throw new ExistingCardException(); });
+        this.creationHandler.put(TRUE, card -> { throw new ExistingCardException(card); });
         this.creationHandler.put(FALSE, repository::insert);
     }
 

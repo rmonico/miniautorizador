@@ -3,8 +3,10 @@ package vr.miniautorizador.host;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vr.miniautorizador.exception.CardNotFoundException;
+import vr.miniautorizador.exception.ExistingCardException;
 import vr.miniautorizador.host.dto.CardBalanceResponseDto;
 import vr.miniautorizador.host.dto.CardCreateRequestDto;
 import vr.miniautorizador.host.dto.CardCreateResponseDto;
@@ -13,6 +15,8 @@ import vr.miniautorizador.service.CardService;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+
+import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,15 +32,24 @@ public class CardEndpoint {
     }
 
     @PostMapping("/cartoes")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CardCreateResponseDto createCard(@RequestBody CardCreateRequestDto body) {
+    public ResponseEntity<CardCreateResponseDto> createCard(@RequestBody CardCreateRequestDto body) {
         val newCard = Card.builder()
             .numero(body.getNumeroCartao())
             .senha(body.getSenha())
             .build();
 
-        val created = cardService.createCard(newCard);
+        Card created;
+        HttpStatus status;
+        try {
+            created = cardService.createCard(newCard);
+            status = HttpStatus.CREATED;
+        } catch (ExistingCardException e) {
+            created = e.getCard();
+            status = HttpStatus.UNPROCESSABLE_ENTITY;
+        }
 
-        return new CardCreateResponseDto(created);
+        val response = new CardCreateResponseDto(created);
+
+        return status(status).body(response);
     }
 }

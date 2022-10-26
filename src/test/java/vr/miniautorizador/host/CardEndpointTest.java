@@ -3,17 +3,16 @@ package vr.miniautorizador.host;
 import lombok.SneakyThrows;
 import lombok.val;
 import org.bson.types.ObjectId;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import vr.miniautorizador.exception.ExistingCardException;
 import vr.miniautorizador.model.Card;
-import vr.miniautorizador.model.MockedCard;
 import vr.miniautorizador.service.CardService;
-
-import java.math.BigDecimal;
 
 import static java.math.BigDecimal.valueOf;
 import static java.util.Optional.of;
@@ -62,11 +61,11 @@ public class CardEndpointTest {
             .build();
 
         val createdCard = Card.builder()
-                .id(new ObjectId())
-                .numero("6549873025634501")
-                .senha("1234")
-                .saldo(valueOf(500))
-                .build();
+            .id(new ObjectId())
+            .numero("6549873025634501")
+            .senha("1234")
+            .saldo(valueOf(500))
+            .build();
 
         when(service.createCard(eq(newCard))).thenReturn(createdCard);
 
@@ -84,4 +83,30 @@ public class CardEndpointTest {
             .andExpect(jsonPath("$.senha").value("1234"))
             .andExpect(jsonPath("$.numeroCartao").value("6549873025634501"));
     }
+
+    @Test
+    @SneakyThrows
+    void GIVEN_card_number_and_password_WHEN_number_already_exists_THEN_return_422() {
+        val newCard = Card.builder()
+            .numero("6549873025634501")
+            .senha("1234")
+            .build();
+
+        when(service.createCard(eq(newCard))).thenThrow(new ExistingCardException(newCard));
+
+        val content = "{\n" +
+            "    \"numeroCartao\": \"6549873025634501\",\n" +
+            "    \"senha\": \"1234\"\n" +
+            "}";
+
+        mvc.perform(
+                post("/cartoes")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(content)
+            )
+            .andExpect(status().isUnprocessableEntity())
+            .andExpect(jsonPath("$.senha").value("1234"))
+            .andExpect(jsonPath("$.numeroCartao").value("6549873025634501"));
+    }
+
 }
