@@ -35,4 +35,11 @@ public class CardEndpointTest {
             .andExpect(jsonPath("$.saldo").value(CARD_BALANCE));
     }
 
+    @Test
+    @SneakyThrows
+    void GIVEN_card_number_WHEN_its_invalid_THEN_return_404() {
+        mvc.perform(
+                get("/cartoes/{numeroCartao}", INVALID_CARD_NUMBER))
+            .andExpect(status().isNotFound());
+    }
 }

@@ -7,7 +7,11 @@ import java.util.Optional;
 
 public class MockedCard {
     public static final String CARD_NUMBER = "1234";
+
+    public static final String INVALID_CARD_NUMBER = "5678";
+
     public static final BigDecimal CARD_BALANCE = new BigDecimal("19.99");
+
     public static final String CARD_PASS = "1q2w3e4r";
 
     public static Card defaultCard() {
