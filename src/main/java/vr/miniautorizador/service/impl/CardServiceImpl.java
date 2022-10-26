@@ -1,6 +1,6 @@
 package vr.miniautorizador.service.impl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vr.miniautorizador.model.Card;
 import vr.miniautorizador.repository.CardRepository;
@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CardServiceImpl implements CardService {
 
     private final CardRepository repository;
