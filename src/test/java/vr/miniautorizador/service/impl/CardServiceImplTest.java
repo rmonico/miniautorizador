@@ -35,7 +35,7 @@ class CardServiceImplTest {
         assertThat(balance)
             .isPresent()
             .get()
-            .isEqualTo(new BigDecimal("19.99"));
+            .isEqualTo(CARD_BALANCE);
     }
 
     @Test
@@ -53,7 +53,7 @@ class CardServiceImplTest {
         assertion.extracting(Card::getId).isNotNull();
         assertion.extracting(Card::getNumero).isEqualTo(CARD_NUMBER);
         assertion.extracting(Card::getSenha).isEqualTo(CARD_PASS);
-        assertion.extracting(Card::getSaldo).isEqualTo(DEFAULT_CARD_BALANCE);
+        assertion.extracting(Card::getSaldo).isEqualTo(CARD_BALANCE);
     }
 
 }
