@@ -8,8 +8,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import vr.miniautorizador.exception.ExistingCardException;
 import vr.miniautorizador.model.Card;
+import vr.miniautorizador.model.Transaction;
 import vr.miniautorizador.repository.CardRepository;
 
+import static java.math.BigDecimal.valueOf;
 import static java.util.Optional.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -68,4 +70,14 @@ class CardServiceImplTest {
         assertThatThrownBy(() -> service.createCard(card)).isInstanceOf(ExistingCardException.class);
     }
 
+    @Test
+    void GIVEN_card_number_password_value_THEN_create_a_transaction() {
+        val transaction = Transaction.builder()
+            .numeroCartao("6549873025634501")
+            .senhaCartao("1234")
+            .valor(valueOf(10))
+            .build();
+
+        assertThat(service.createTransaction(transaction)).isTrue();
+    }
 }

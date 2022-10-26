@@ -4,6 +4,7 @@ import lombok.val;
 import org.springframework.stereotype.Service;
 import vr.miniautorizador.exception.ExistingCardException;
 import vr.miniautorizador.model.Card;
+import vr.miniautorizador.model.Transaction;
 import vr.miniautorizador.repository.CardRepository;
 import vr.miniautorizador.service.CardService;
 
@@ -46,5 +47,10 @@ public class CardServiceImpl implements CardService {
         val existing = repository.findByNumero(card.getNumero());
 
         return creationHandler.get(existing.isPresent()).handle(card);
+    }
+
+    @Override
+    public boolean createTransaction(Transaction transaction) {
+        return false;
     }
 }
