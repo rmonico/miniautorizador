@@ -2,14 +2,20 @@ package vr.miniautorizador.host;
 
 import lombok.SneakyThrows;
 import lombok.val;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import vr.miniautorizador.model.Card;
+import vr.miniautorizador.model.MockedCard;
 import vr.miniautorizador.service.CardService;
 
+import java.math.BigDecimal;
+
+import static java.math.BigDecimal.valueOf;
 import static java.util.Optional.of;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -50,6 +56,20 @@ public class CardEndpointTest {
     @Test
     @SneakyThrows
     void GIVEN_card_number_and_password_WHEN_number_dont_exists_THEN_create_it() {
+        val newCard = Card.builder()
+            .numero("6549873025634501")
+            .senha("1234")
+            .build();
+
+        val createdCard = Card.builder()
+                .id(new ObjectId())
+                .numero("6549873025634501")
+                .senha("1234")
+                .saldo(valueOf(500))
+                .build();
+
+        when(service.createCard(eq(newCard))).thenReturn(createdCard);
+
         val content = "{\n" +
             "    \"numeroCartao\": \"6549873025634501\",\n" +
             "    \"senha\": \"1234\"\n" +

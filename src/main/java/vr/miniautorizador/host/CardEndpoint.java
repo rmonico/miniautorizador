@@ -8,6 +8,7 @@ import vr.miniautorizador.exception.CardNotFoundException;
 import vr.miniautorizador.host.dto.CardBalanceResponseDto;
 import vr.miniautorizador.host.dto.CardCreateRequestDto;
 import vr.miniautorizador.host.dto.CardCreateResponseDto;
+import vr.miniautorizador.model.Card;
 import vr.miniautorizador.service.CardService;
 
 import java.math.BigDecimal;
@@ -29,11 +30,13 @@ public class CardEndpoint {
     @PostMapping("/cartoes")
     @ResponseStatus(HttpStatus.CREATED)
     public CardCreateResponseDto createCard(@RequestBody CardCreateRequestDto body) {
-        val response = new CardCreateResponseDto();
+        val newCard = Card.builder()
+            .numero(body.getNumeroCartao())
+            .senha(body.getSenha())
+            .build();
 
-        response.setNumeroCartao("6549873025634501");
-        response.setSenha("1234");
+        val created = cardService.createCard(newCard);
 
-        return response;
+        return new CardCreateResponseDto(created);
     }
 }
