@@ -24,14 +24,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Card createCard(Card cardData) {
-        Card card = new Card();
-
-        card.setId(new ObjectId());
-        card.setNumero("1234");
-        card.setSenha("1q2w3e4r");
-        card.setSaldo(new BigDecimal(500));
-
-        return card;
+    public Card createCard(Card card) {
+        return repository.insert(card);
     }
 }
