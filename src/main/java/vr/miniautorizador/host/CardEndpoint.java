@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vr.miniautorizador.exception.CardNotFoundException;
-import vr.miniautorizador.exception.ExistingCardException;
-import vr.miniautorizador.exception.InvalidCardNumber;
-import vr.miniautorizador.exception.InvalidPassword;
+import vr.miniautorizador.exception.*;
 import vr.miniautorizador.host.dto.*;
 import vr.miniautorizador.model.Card;
 import vr.miniautorizador.model.CreateTransactionErrorResponseDto;
@@ -54,7 +51,6 @@ public class CardEndpoint {
     }
 
     @PostMapping("/transacoes")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> createTransaction(@RequestBody CreateTransactionRequestDto request) {
         val transaction = Transaction.builder()
             .numeroCartao(request.getNumeroCartao())
@@ -69,6 +65,9 @@ public class CardEndpoint {
             return ResponseEntity.unprocessableEntity().body(body);
         } catch (InvalidPassword e) {
             val body = new CreateTransactionErrorResponseDto("SENHA_INVALIDA");
+            return ResponseEntity.unprocessableEntity().body(body);
+        } catch (InsufficientBalance e) {
+            val body = new CreateTransactionErrorResponseDto("SALDO_INSUFICIENTE");
             return ResponseEntity.unprocessableEntity().body(body);
         }
 
