@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import vr.miniautorizador.exception.ExistingCardException;
 import vr.miniautorizador.exception.InvalidCardNumber;
+import vr.miniautorizador.exception.InvalidPassword;
 import vr.miniautorizador.model.Card;
 import vr.miniautorizador.service.CardService;
 
@@ -146,6 +147,26 @@ public class CardEndpointTest {
             )
             .andExpect(status().isUnprocessableEntity())
             .andExpect(jsonPath("$.message").value("CARTAO_INEXISTENTE"));
+    }
+
+    @Test
+    @SneakyThrows
+    void GIVEN_card_number_password_value_WHEN_invalid_password_THEN_return_invalid_password() {
+        String content = "{\n" +
+            "    \"numeroCartao\": \"6549873025634501\",\n" +
+            "    \"senhaCartao\": \"1234\",\n" +
+            "    \"valor\": 10.00\n" +
+            "}\n";
+
+        when(service.createTransaction(any())).thenThrow(InvalidPassword.class);
+
+        mvc.perform(
+                post("/transacoes")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(content)
+            )
+            .andExpect(status().isUnprocessableEntity())
+            .andExpect(jsonPath("$.message").value("SENHA_INVALIDA"));
     }
 
 }
