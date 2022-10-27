@@ -54,7 +54,9 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public long createTransaction(Transaction transaction) {
-        repository.findAndIncrementBalanceByNumero("6549873025634501", valueOf(10));
-        return 1L;
+        val numeroCartao = transaction.getNumeroCartao();
+        val valor = transaction.getValor();
+
+        return repository.findAndIncrementBalanceByNumero(numeroCartao, valor);
     }
 }

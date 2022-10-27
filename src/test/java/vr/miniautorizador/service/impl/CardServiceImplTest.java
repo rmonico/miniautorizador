@@ -73,6 +73,8 @@ class CardServiceImplTest {
 
     @Test
     void GIVEN_card_number_password_value_THEN_update_balance() {
+        when(repository.findAndIncrementBalanceByNumero(eq("6549873025634501"), eq(valueOf(10)))).thenReturn(1L);
+
         val transaction = Transaction.builder()
             .numeroCartao("6549873025634501")
             .senhaCartao("1234")
