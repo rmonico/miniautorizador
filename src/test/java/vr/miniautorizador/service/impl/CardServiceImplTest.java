@@ -84,6 +84,13 @@ class CardServiceImplTest {
             .valor(valueOf(10))
             .build();
 
+        val card = of(Card.builder()
+            .numero("6549873025634501")
+            .senha("1234")
+            .build());
+
+        when(repository.findByNumero(eq("6549873025634501"))).thenReturn(card);
+
         long totalUpdated = service.createTransaction(transaction);
 
         assertThat(totalUpdated).isEqualTo(1L);
@@ -98,12 +105,7 @@ class CardServiceImplTest {
             .valor(valueOf(10))
             .build();
 
-        val card = of(Card.builder()
-            .numero("6549873025634501")
-            .build());
-
-        when(repository.findByNumero(eq("6549873025634501"))).thenReturn(card);
-
         assertThatThrownBy(() -> service.createTransaction(transaction)).isInstanceOf(InvalidCardNumber.class);
     }
+
 }
