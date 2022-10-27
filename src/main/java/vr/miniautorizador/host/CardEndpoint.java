@@ -7,11 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vr.miniautorizador.exception.CardNotFoundException;
 import vr.miniautorizador.exception.ExistingCardException;
-import vr.miniautorizador.host.dto.CardBalanceResponseDto;
-import vr.miniautorizador.host.dto.CardCreateRequestDto;
-import vr.miniautorizador.host.dto.CardCreateResponseDto;
-import vr.miniautorizador.host.dto.CreateTransactionResponseDto;
+import vr.miniautorizador.host.dto.*;
 import vr.miniautorizador.model.Card;
+import vr.miniautorizador.model.Transaction;
 import vr.miniautorizador.service.CardService;
 
 import static org.springframework.http.ResponseEntity.status;
@@ -53,7 +51,15 @@ public class CardEndpoint {
 
     @PostMapping("/transacoes")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateTransactionResponseDto createTransaction() {
+    public CreateTransactionResponseDto createTransaction(@RequestBody CreateTransactionRequestDto request) {
+        Transaction transaction = Transaction.builder()
+            .numeroCartao(request.getNumeroCartao())
+            .senhaCartao(request.getSenhaCartao())
+            .valor(request.getValor())
+            .build();
+
+        cardService.createTransaction(transaction);
+
         return new CreateTransactionResponseDto("OK");
     }
 }
