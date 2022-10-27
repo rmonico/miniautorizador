@@ -87,6 +87,7 @@ class CardServiceImplTest {
         val card = of(Card.builder()
             .numero("6549873025634501")
             .senha("1234")
+            .saldo(valueOf(100))
             .build());
 
         when(repository.findByNumero(eq("6549873025634501"))).thenReturn(card);
