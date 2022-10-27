@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import vr.miniautorizador.exception.CardNotFoundException;
 import vr.miniautorizador.exception.ExistingCardException;
 import vr.miniautorizador.exception.InvalidCardNumber;
+import vr.miniautorizador.exception.InvalidPassword;
 import vr.miniautorizador.host.dto.*;
 import vr.miniautorizador.model.Card;
 import vr.miniautorizador.model.CreateTransactionErrorResponseDto;
@@ -65,6 +66,9 @@ public class CardEndpoint {
             cardService.createTransaction(transaction);
         } catch (InvalidCardNumber e) {
             val body = new CreateTransactionErrorResponseDto("CARTAO_INEXISTENTE");
+            return ResponseEntity.unprocessableEntity().body(body);
+        } catch (InvalidPassword e) {
+            val body = new CreateTransactionErrorResponseDto("SENHA_INVALIDA");
             return ResponseEntity.unprocessableEntity().body(body);
         }
 
