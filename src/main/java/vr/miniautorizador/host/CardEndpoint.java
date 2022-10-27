@@ -10,11 +10,9 @@ import vr.miniautorizador.exception.ExistingCardException;
 import vr.miniautorizador.host.dto.CardBalanceResponseDto;
 import vr.miniautorizador.host.dto.CardCreateRequestDto;
 import vr.miniautorizador.host.dto.CardCreateResponseDto;
+import vr.miniautorizador.host.dto.CreateTransactionResponseDto;
 import vr.miniautorizador.model.Card;
 import vr.miniautorizador.service.CardService;
-
-import java.math.BigDecimal;
-import java.util.Optional;
 
 import static org.springframework.http.ResponseEntity.status;
 
@@ -51,5 +49,11 @@ public class CardEndpoint {
         val response = new CardCreateResponseDto(created);
 
         return status(status).body(response);
+    }
+
+    @PostMapping("/transacoes")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CreateTransactionResponseDto createTransaction() {
+        return new CreateTransactionResponseDto("OK");
     }
 }
