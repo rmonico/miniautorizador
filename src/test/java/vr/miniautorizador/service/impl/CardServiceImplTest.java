@@ -7,13 +7,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import vr.miniautorizador.exception.ExistingCardException;
+import vr.miniautorizador.exception.InsufficientBalance;
 import vr.miniautorizador.exception.InvalidCardNumber;
 import vr.miniautorizador.exception.InvalidPassword;
 import vr.miniautorizador.model.Card;
 import vr.miniautorizador.model.Transaction;
 import vr.miniautorizador.repository.CardRepository;
-
-import java.util.Optional;
 
 import static java.math.BigDecimal.valueOf;
 import static java.util.Optional.of;
@@ -127,4 +126,22 @@ class CardServiceImplTest {
         assertThatThrownBy(() -> service.createTransaction(transaction)).isInstanceOf(InvalidPassword.class);
     }
 
+    @Test
+    void GIVEN_card_number_password_value_WHEN_insufficient_balance_THEN_return_insufficient_balance() {
+        val transaction = Transaction.builder()
+            .numeroCartao("6549873025634501")
+            .senhaCartao("1234")
+            .valor(valueOf(10))
+            .build();
+
+        val card = of(Card.builder()
+            .numero("6549873025634501")
+            .senha("1234")
+            .saldo(valueOf(8))
+            .build());
+
+        when(repository.findByNumero(eq("6549873025634501"))).thenReturn(card);
+
+        assertThatThrownBy(() -> service.createTransaction(transaction)).isInstanceOf(InsufficientBalance.class);
+    }
 }
