@@ -17,7 +17,6 @@ import java.util.Optional;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-import static java.math.BigDecimal.valueOf;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -56,16 +55,18 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public long createTransaction(Transaction transaction) {
-        val numeroCartao = transaction.getNumeroCartao();
+        val numero = transaction.getNumeroCartao();
         val valor = transaction.getValor();
 
-        val card = repository.findByNumero(numeroCartao);
+        val card = repository.findByNumero(numero);
 
-        if (card.isEmpty())
-            throw new InvalidCardNumber();
-        else if (!card.get().getSenha().equals(transaction.getSenhaCartao()))
-            throw new InvalidPassword();
+        authorize(transaction, card);
 
-        return repository.findAndIncrementBalanceByNumero(numeroCartao, valor);
+        return repository.findAndIncrementBalanceByNumero(numero, valor);
+    }
+
+    private void authorize(Transaction t, Optional<Card> card) {
+        card.orElseThrow(InvalidCardNumber::new);
+        card.map(Card::getSenha).filter(s -> s.equals(t.getSenhaCartao())).orElseThrow(InvalidPassword::new);
     }
 }
