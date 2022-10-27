@@ -16,6 +16,7 @@ import static java.util.Optional.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static vr.miniautorizador.model.MockedCard.*;
 
@@ -71,13 +72,16 @@ class CardServiceImplTest {
     }
 
     @Test
-    void GIVEN_card_number_password_value_THEN_create_a_transaction() {
+    void GIVEN_card_number_password_value_THEN_update_balance() {
         val transaction = Transaction.builder()
             .numeroCartao("6549873025634501")
             .senhaCartao("1234")
             .valor(valueOf(10))
             .build();
 
-        assertThat(service.createTransaction(transaction)).isTrue();
+        long totalUpdated = service.createTransaction(transaction);
+
+        assertThat(totalUpdated).isEqualTo(1L);
+        verify(repository).findAndIncrementBalanceByNumero("6549873025634501", valueOf(10));
     }
 }

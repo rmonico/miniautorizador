@@ -12,5 +12,5 @@ public interface CardService {
 
     Card createCard(Card cardData);
 
-    boolean createTransaction(Transaction transaction);
+    long createTransaction(Transaction transaction);
 }

@@ -15,6 +15,7 @@ import java.util.Optional;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
+import static java.math.BigDecimal.valueOf;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -31,7 +32,9 @@ public class CardServiceImpl implements CardService {
         this.repository = repository;
 
         this.creationHandler = new HashMap<>();
-        this.creationHandler.put(TRUE, card -> { throw new ExistingCardException(card); });
+        this.creationHandler.put(TRUE, card -> {
+            throw new ExistingCardException(card);
+        });
         this.creationHandler.put(FALSE, repository::insert);
     }
 
@@ -50,7 +53,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public boolean createTransaction(Transaction transaction) {
-        return true;
+    public long createTransaction(Transaction transaction) {
+        return 0L;
     }
 }
