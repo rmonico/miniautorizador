@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import vr.miniautorizador.exception.ExistingCardException;
+import vr.miniautorizador.exception.ExistingCard;
 import vr.miniautorizador.exception.InsufficientBalance;
 import vr.miniautorizador.exception.InvalidCardNumber;
 import vr.miniautorizador.exception.InvalidPassword;
@@ -71,7 +71,7 @@ class CardServiceImplTest {
 
         when(repository.findByNumero(eq(card.getNumero()))).thenReturn(of(card));
 
-        assertThatThrownBy(() -> service.createCard(card)).isInstanceOf(ExistingCardException.class);
+        assertThatThrownBy(() -> service.createCard(card)).isInstanceOf(ExistingCard.class);
     }
 
     @Test

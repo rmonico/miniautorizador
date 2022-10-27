@@ -2,7 +2,7 @@ package vr.miniautorizador.service.impl;
 
 import lombok.val;
 import org.springframework.stereotype.Service;
-import vr.miniautorizador.exception.ExistingCardException;
+import vr.miniautorizador.exception.ExistingCard;
 import vr.miniautorizador.exception.InsufficientBalance;
 import vr.miniautorizador.exception.InvalidCardNumber;
 import vr.miniautorizador.exception.InvalidPassword;
@@ -36,7 +36,7 @@ public class CardServiceImpl implements CardService {
 
         this.creationHandler = new HashMap<>();
         this.creationHandler.put(TRUE, card -> {
-            throw new ExistingCardException(card);
+            throw new ExistingCard(card);
         });
         this.creationHandler.put(FALSE, repository::insert);
     }

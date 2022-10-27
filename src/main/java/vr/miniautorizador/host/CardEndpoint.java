@@ -3,7 +3,6 @@ package vr.miniautorizador.host;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vr.miniautorizador.exception.*;
@@ -25,7 +24,7 @@ public class CardEndpoint {
     public CardBalanceResponseDto getCardBalance(@PathVariable("numeroCartao") String cardNumber) {
         val saldo = cardService.getBalance(cardNumber);
 
-        return new CardBalanceResponseDto(saldo.orElseThrow(CardNotFoundException::new));
+        return new CardBalanceResponseDto(saldo.orElseThrow(CardNotFound::new));
     }
 
     @PostMapping("/cartoes")
@@ -40,7 +39,7 @@ public class CardEndpoint {
         try {
             created = cardService.createCard(newCard);
             status = HttpStatus.CREATED;
-        } catch (ExistingCardException e) {
+        } catch (ExistingCard e) {
             created = e.getCard();
             status = HttpStatus.UNPROCESSABLE_ENTITY;
         }

@@ -9,7 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import vr.miniautorizador.exception.ExistingCardException;
+import vr.miniautorizador.exception.ExistingCard;
 import vr.miniautorizador.exception.InsufficientBalance;
 import vr.miniautorizador.exception.InvalidCardNumber;
 import vr.miniautorizador.exception.InvalidPassword;
@@ -95,7 +95,7 @@ public class CardEndpointTest {
             .senha("1234")
             .build();
 
-        when(service.createCard(eq(newCard))).thenThrow(new ExistingCardException(newCard));
+        when(service.createCard(eq(newCard))).thenThrow(new ExistingCard(newCard));
 
         val content = "{\n" +
             "    \"numeroCartao\": \"6549873025634501\",\n" +
