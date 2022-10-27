@@ -3,7 +3,6 @@ package vr.miniautorizador.host;
 import lombok.SneakyThrows;
 import lombok.val;
 import org.bson.types.ObjectId;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -119,12 +118,30 @@ public class CardEndpointTest {
             "}\n";
 
         mvc.perform(
-            post("/transacoes")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content)
+                post("/transacoes")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(content)
             )
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.status").value("OK"));
+    }
+
+    @Test
+    @SneakyThrows
+    void GIVEN_card_number_password_value_WHEN_number_doesnt_exists_THEN_return_invalid_card_number() {
+        String content = "{\n" +
+            "    \"numeroCartao\": \"6549873025634501\",\n" +
+            "    \"senhaCartao\": \"1234\",\n" +
+            "    \"valor\": 10.00\n" +
+            "}\n";
+
+        mvc.perform(
+                post("/transacoes")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(content)
+            )
+            .andExpect(status().isUnprocessableEntity())
+            .andExpect(jsonPath("$.message").value("CARTAO_INEXISTENTE"));
     }
 
 }
