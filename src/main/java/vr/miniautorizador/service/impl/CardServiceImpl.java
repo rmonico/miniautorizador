@@ -4,6 +4,7 @@ import lombok.val;
 import org.springframework.stereotype.Service;
 import vr.miniautorizador.exception.ExistingCardException;
 import vr.miniautorizador.exception.InvalidCardNumber;
+import vr.miniautorizador.exception.InvalidPassword;
 import vr.miniautorizador.model.Card;
 import vr.miniautorizador.model.Transaction;
 import vr.miniautorizador.repository.CardRepository;
@@ -62,6 +63,8 @@ public class CardServiceImpl implements CardService {
 
         if (card.isEmpty())
             throw new InvalidCardNumber();
+        else if (!card.get().getSenha().equals(transaction.getSenhaCartao()))
+            throw new InvalidPassword();
 
         return repository.findAndIncrementBalanceByNumero(numeroCartao, valor);
     }
