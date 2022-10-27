@@ -3,12 +3,15 @@ package vr.miniautorizador.host;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vr.miniautorizador.exception.CardNotFoundException;
 import vr.miniautorizador.exception.ExistingCardException;
+import vr.miniautorizador.exception.InvalidCardNumber;
 import vr.miniautorizador.host.dto.*;
 import vr.miniautorizador.model.Card;
+import vr.miniautorizador.model.CreateTransactionErrorResponseDto;
 import vr.miniautorizador.model.Transaction;
 import vr.miniautorizador.service.CardService;
 
@@ -51,15 +54,20 @@ public class CardEndpoint {
 
     @PostMapping("/transacoes")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateTransactionResponseDto createTransaction(@RequestBody CreateTransactionRequestDto request) {
-        Transaction transaction = Transaction.builder()
+    public ResponseEntity<?> createTransaction(@RequestBody CreateTransactionRequestDto request) {
+        val transaction = Transaction.builder()
             .numeroCartao(request.getNumeroCartao())
             .senhaCartao(request.getSenhaCartao())
             .valor(request.getValor())
             .build();
 
-        cardService.createTransaction(transaction);
+        try {
+            cardService.createTransaction(transaction);
+        } catch (InvalidCardNumber e) {
+            val body = new CreateTransactionErrorResponseDto("CARTAO_INEXISTENTE");
+            return ResponseEntity.unprocessableEntity().body(body);
+        }
 
-        return new CreateTransactionResponseDto("OK");
+        return ResponseEntity.status(HttpStatus.CREATED).body(new CreateTransactionResponseDto("OK"));
     }
 }

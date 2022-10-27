@@ -10,11 +10,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import vr.miniautorizador.exception.ExistingCardException;
+import vr.miniautorizador.exception.InvalidCardNumber;
 import vr.miniautorizador.model.Card;
 import vr.miniautorizador.service.CardService;
 
 import static java.math.BigDecimal.valueOf;
 import static java.util.Optional.of;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -134,6 +136,8 @@ public class CardEndpointTest {
             "    \"senhaCartao\": \"1234\",\n" +
             "    \"valor\": 10.00\n" +
             "}\n";
+
+        when(service.createTransaction(any())).thenThrow(InvalidCardNumber.class);
 
         mvc.perform(
                 post("/transacoes")
