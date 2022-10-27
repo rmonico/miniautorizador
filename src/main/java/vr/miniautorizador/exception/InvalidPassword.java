@@ -1,4 +1,8 @@
 package vr.miniautorizador.exception;
 
-public class InvalidPassword extends RuntimeException {
+public class InvalidPassword extends AuthorizationException {
+
+    public InvalidPassword() {
+        super("SENHA_INVALIDA");
+    }
 }

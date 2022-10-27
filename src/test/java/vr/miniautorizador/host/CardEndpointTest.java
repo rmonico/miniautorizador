@@ -139,7 +139,7 @@ public class CardEndpointTest {
             "    \"valor\": 10.00\n" +
             "}\n";
 
-        when(service.createTransaction(any())).thenThrow(InvalidCardNumber.class);
+        when(service.createTransaction(any())).thenThrow(new InvalidCardNumber());
 
         mvc.perform(
                 post("/transacoes")
@@ -159,7 +159,7 @@ public class CardEndpointTest {
             "    \"valor\": 10.00\n" +
             "}\n";
 
-        when(service.createTransaction(any())).thenThrow(InvalidPassword.class);
+        when(service.createTransaction(any())).thenThrow(new InvalidPassword());
 
         mvc.perform(
                 post("/transacoes")
@@ -179,7 +179,7 @@ public class CardEndpointTest {
             "    \"valor\": 10.00\n" +
             "}\n";
 
-        when(service.createTransaction(any())).thenThrow(InsufficientBalance.class);
+        when(service.createTransaction(any())).thenThrow(new InsufficientBalance());
 
         mvc.perform(
                 post("/transacoes")

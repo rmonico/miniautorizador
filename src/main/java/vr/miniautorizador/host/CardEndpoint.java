@@ -59,14 +59,8 @@ public class CardEndpoint {
 
         try {
             cardService.createTransaction(transaction);
-        } catch (InvalidCardNumber e) {
-            val body = new CreateTransactionErrorResponseDto("CARTAO_INEXISTENTE");
-            return ResponseEntity.unprocessableEntity().body(body);
-        } catch (InvalidPassword e) {
-            val body = new CreateTransactionErrorResponseDto("SENHA_INVALIDA");
-            return ResponseEntity.unprocessableEntity().body(body);
-        } catch (InsufficientBalance e) {
-            val body = new CreateTransactionErrorResponseDto("SALDO_INSUFICIENTE");
+        } catch (AuthorizationException e) {
+            val body = new CreateTransactionErrorResponseDto(e.getMessage());
             return ResponseEntity.unprocessableEntity().body(body);
         }
 
