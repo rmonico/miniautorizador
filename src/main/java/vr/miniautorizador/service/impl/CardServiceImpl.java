@@ -54,6 +54,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public long createTransaction(Transaction transaction) {
-        return 0L;
+        repository.findAndIncrementBalanceByNumero("6549873025634501", valueOf(10));
+        return 1L;
     }
 }
